@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bikinaplikasi/home_page.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -15,81 +14,111 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(title: Text("Login Page")),
-        body: Column(
-          children: [
-            _usernameField(),
-            _passwordField(),
-            _loginButton(context),
-          ],
+    return Theme(
+      data: ThemeData.dark(), // biar background sama kayak Stopwatch
+      child: SafeArea(
+        child: Scaffold(
+          body: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24.0),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      "Login Page",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 40),
+                    _usernameField(),
+                    const SizedBox(height: 20),
+                    _passwordField(),
+                    const SizedBox(height: 30),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SizedBox(
+                        width: 200,
+                        child: _loginButton(context),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 
   Widget _usernameField() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: TextFormField(
-        onChanged: (value) {
-          setState(() {
-            username = value;
-          });
-        },
-        decoration: InputDecoration(
-          hintText: "Username",
-          contentPadding: EdgeInsets.all(8.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-        ),
+    return TextFormField(
+      style: const TextStyle(color: Colors.white),
+      onChanged: (value) {
+        setState(() {
+          username = value;
+        });
+      },
+      decoration: InputDecoration(
+        hintText: "Username",
+        hintStyle: const TextStyle(color: Colors.white54),
+        filled: true,
+        fillColor: Colors.grey[850],
+        contentPadding: const EdgeInsets.all(16),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
 
   Widget _passwordField() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: TextFormField(
-        obscureText: true,
-        onChanged: (value) {
-          setState(() {
-            password = value;
-          });
-        },
-        decoration: InputDecoration(
-          hintText: "Password",
-          contentPadding: EdgeInsets.all(8.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-        ),
+    return TextFormField(
+      style: const TextStyle(color: Colors.white),
+      obscureText: true,
+      onChanged: (value) {
+        setState(() {
+          password = value;
+        });
+      },
+      decoration: InputDecoration(
+        hintText: "Password",
+        hintStyle: const TextStyle(color: Colors.white54),
+        filled: true,
+        fillColor: Colors.grey[850],
+        contentPadding: const EdgeInsets.all(16),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
 
   Widget _loginButton(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      width: MediaQuery.of(context).size.width,
-      child: ElevatedButton(
-        onPressed: () {
-          String text = "";
-          if (username == "flutter" && password == "flutter") {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const HomePage()),
-            );
-          } else {
-            text = "Login failed!";
-          }
-          SnackBar snackBar = SnackBar(content: Text(text));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
-        child: Text("Login"),
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        backgroundColor: const Color.fromARGB(255, 10, 132, 255),
+        foregroundColor: Colors.white,
+        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
+      onPressed: () {
+        String text = "";
+        if (username == "" && password == "") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+          );
+        } else {
+          text = "Login failed!";
+          final snackBar = SnackBar(content: Text(text));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      },
+      child: const Text("Login"),
     );
   }
 }
